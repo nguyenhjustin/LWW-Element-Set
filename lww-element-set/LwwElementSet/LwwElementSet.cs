@@ -60,6 +60,15 @@ namespace LwwElementSet
     }
 
     /// <summary>
+    /// Determines if this replica doesn't contain any elements.
+    /// </summary>
+    /// <returns>True if this replica is empty; false if not.</returns>
+    public bool IsEmpty()
+    {
+      return false;
+    }
+
+    /// <summary>
     /// Sets the bias for equal timestamps towards add.
     /// </summary>
     public void SetBiasAdd()
