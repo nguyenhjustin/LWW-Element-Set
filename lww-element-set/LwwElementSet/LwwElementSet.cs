@@ -11,6 +11,7 @@ namespace LwwElementSet
   {
     private COLG.IDictionary<T, DateTime> m_addSet;
     private COLG.IDictionary<T, DateTime> m_removeSet;
+    private bool m_biasAdd;
 
     /// <summary>
     /// Default constructor.
@@ -19,6 +20,7 @@ namespace LwwElementSet
     {
       m_addSet = new COLG.Dictionary<T, DateTime>();
       m_removeSet = new COLG.Dictionary<T, DateTime>();
+      m_biasAdd = true;
     }
 
     /// <summary>
@@ -56,12 +58,32 @@ namespace LwwElementSet
     }
 
     /// <summary>
+    /// Sets the bias for equal timestamps towards add.
+    /// </summary>
+    public void SetBiasAdd()
+    {
+      m_biasAdd = true;
+    }
+
+    /// <summary>
+    /// Sets the bias for equal timestamps towards remove.
+    /// </summary>
+    public void SetBiasRemove()
+    {
+      m_biasAdd = false;
+    }
+
+    /// <summary>
     /// Returns the merged result of all the <paramref name="replicas"/>.
     /// </summary>
+    /// <param name="biasAdd">True to have equal timestamps bias towards add; 
+    /// false to have equal timestamps bias towards remove.</param>
     /// <param name="replicas">The list of replicas to merge.</param>
     /// <returns>The merged replica of all the <paramref name="replicas"/>.
     /// </returns>
-    static public LwwElementSet<T> Merge(params LwwElementSet<T>[] replicas)
+    static public LwwElementSet<T> Merge(
+      bool biasAdd,
+      params LwwElementSet<T>[] replicas)
     {
       return null;
     }
