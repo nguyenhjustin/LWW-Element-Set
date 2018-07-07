@@ -54,5 +54,16 @@ namespace LwwElementSet
     {
       return false;
     }
+
+    /// <summary>
+    /// Returns the merged result of all the <paramref name="replicas"/>.
+    /// </summary>
+    /// <param name="replicas">The list of replicas to merge.</param>
+    /// <returns>The merged replica of all the <paramref name="replicas"/>.
+    /// </returns>
+    static public LwwElementSet<T> Merge(params LwwElementSet<T>[] replicas)
+    {
+      return null;
+    }
   }
 }
