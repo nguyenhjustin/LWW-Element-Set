@@ -9,8 +9,8 @@ namespace LwwElementSet
   /// </summary>
   public class LwwElementSet<T>
   {
-    private COLG.IDictionary<T, DateTime> m_addSet;
-    private COLG.IDictionary<T, DateTime> m_removeSet;
+    private COLG.IDictionary<T, long> m_addSet;
+    private COLG.IDictionary<T, long> m_removeSet;
     private bool m_biasAdd;
 
     /// <summary>
@@ -18,8 +18,8 @@ namespace LwwElementSet
     /// </summary>
     public LwwElementSet()
     {
-      m_addSet = new COLG.Dictionary<T, DateTime>();
-      m_removeSet = new COLG.Dictionary<T, DateTime>();
+      m_addSet = new COLG.Dictionary<T, long>();
+      m_removeSet = new COLG.Dictionary<T, long>();
       m_biasAdd = true;
     }
 
@@ -27,10 +27,11 @@ namespace LwwElementSet
     /// Adds an element to the set.
     /// </summary>
     /// <param name="element">The element to add.</param>
-    /// <param name="timestamp">The time of this operation.</param>
+    /// <param name="timestamp">The number of ticks representing the time of 
+    /// this operation.</param>
     public void Add(
       T element,
-      DateTime timestamp)
+      long timestamp)
     {
 
     }
@@ -39,10 +40,11 @@ namespace LwwElementSet
     /// Removes an element from the set.
     /// </summary>
     /// <param name="element">The element to remove.</param>
-    /// <param name="timestamp">The time of this operation.</param>
+    /// <param name="timestamp">The number of ticks representing the time of 
+    /// this operation.</param>
     public void Remove(
       T element,
-      DateTime timestamp)
+      long timestamp)
     {
 
     }
