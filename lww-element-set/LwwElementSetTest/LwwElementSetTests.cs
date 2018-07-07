@@ -81,6 +81,8 @@ namespace LwwElementSet
         replica.Add(elements[i], m_time.GetDateTimeNow());
       }
 
+      Assert.IsFalse(replica.IsEmpty());
+
       for (int i = 0; i < elements.Length; i++)
       {
         Assert.IsTrue(replica.Lookup(elements[i]));
@@ -100,6 +102,8 @@ namespace LwwElementSet
       {
         replica.Remove(elements[i], m_time.GetDateTimeNow());
       }
+
+      Assert.IsTrue(replica.IsEmpty());
 
       for (int i = 0; i < elements.Length; i++)
       {
@@ -127,6 +131,8 @@ namespace LwwElementSet
         replica.Remove(elements[i], m_time.GetDateTimeNow());
       }
 
+      Assert.IsTrue(replica.IsEmpty());
+
       for (int i = 0; i < elements.Length; i++)
       {
         Assert.IsFalse(replica.Lookup(elements[i]));
@@ -148,6 +154,7 @@ namespace LwwElementSet
       replica.Remove(element, time);
 
       replica.SetBiasAdd();
+      Assert.IsFalse(replica.IsEmpty());
       Assert.IsTrue(replica.Lookup(element));
     }
 
@@ -166,6 +173,7 @@ namespace LwwElementSet
       replica.Remove(element, time);
 
       replica.SetBiasRemove();
+      Assert.IsTrue(replica.IsEmpty());
       Assert.IsFalse(replica.Lookup(element));
     }
 
@@ -184,6 +192,8 @@ namespace LwwElementSet
 
       LwwElementSet<int> mergedReplica = 
         LwwElementSet<int>.Merge(true, replica1, replica2);
+
+      Assert.IsFalse(mergedReplica.IsEmpty());
       Assert.IsTrue(mergedReplica.Lookup(1));
       Assert.IsTrue(mergedReplica.Lookup(2));
     }
@@ -206,6 +216,8 @@ namespace LwwElementSet
 
       LwwElementSet<int> mergedReplica =
         LwwElementSet<int>.Merge(true, replica1, replica2);
+
+      Assert.IsTrue(mergedReplica.IsEmpty());
       Assert.IsFalse(mergedReplica.Lookup(element));
     }
 
@@ -228,6 +240,8 @@ namespace LwwElementSet
 
       LwwElementSet<int> mergedReplica =
         LwwElementSet<int>.Merge(true, replica1, replica2);
+
+      Assert.IsFalse(mergedReplica.IsEmpty());
       Assert.IsTrue(mergedReplica.Lookup(element));
     }
 
@@ -250,6 +264,8 @@ namespace LwwElementSet
 
       LwwElementSet<int> mergedReplica =
         LwwElementSet<int>.Merge(false, replica1, replica2);
+
+      Assert.IsTrue(mergedReplica.IsEmpty());
       Assert.IsFalse(mergedReplica.Lookup(element));
     }
   }
