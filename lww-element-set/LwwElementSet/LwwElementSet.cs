@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lww_element_set
 {
-  class LwwElementSet
+  public class LwwElementSet
   {
   }
 }
