@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace lww_element_set
+namespace LwwElementSet
 {
   [TestClass]
   public class LwwElementSetTests

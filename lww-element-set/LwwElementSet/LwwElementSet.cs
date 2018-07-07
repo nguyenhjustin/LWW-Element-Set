@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lww_element_set
+namespace LwwElementSet
 {
   public class LwwElementSet
   {
