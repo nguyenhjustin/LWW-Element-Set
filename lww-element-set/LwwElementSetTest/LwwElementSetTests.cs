@@ -1,4 +1,5 @@
 ﻿using System;
+using COLG = System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LwwElementSet
@@ -9,7 +10,6 @@ namespace LwwElementSet
   [TestClass]
   public class LwwElementSetTests
   {
-    private Random m_random;
     private ReliableTime m_time;
 
     /// <summary>
@@ -53,7 +53,6 @@ namespace LwwElementSet
     [TestInitialize]
     public void InitializeTest()
     {
-      m_random = new Random();
       m_time = new ReliableTime();
     }
 
@@ -267,6 +266,72 @@ namespace LwwElementSet
 
       Assert.IsTrue(mergedReplica.IsEmpty());
       Assert.IsFalse(mergedReplica.Lookup(element));
+    }
+
+    /// <summary>
+    /// Tests random operations on multiple replicas and validates the 
+    /// merged replica is correct.
+    /// </summary>
+    [TestMethod]
+    public void MergeReplicasRandomOperationsTest()
+    {
+      // Create multiple replicas to apply multiple operations across.
+      int numReplicas = 5;
+      COLG.List<LwwElementSet<int>> replicas = 
+        new COLG.List<LwwElementSet<int>>(numReplicas);
+
+      for (int i = 0; i < numReplicas; i++)
+      {
+        replicas.Add(new LwwElementSet<int>());
+      }
+
+      // Create a single replica to apply all the operations on. 
+      // This will be used to verify the merged replica of the replicas above.
+      LwwElementSet<int> expectedReplica = new LwwElementSet<int>();
+
+      Random rand = new Random();
+
+      COLG.List<long> previousTimes = new COLG.List<long>();
+      previousTimes.Add(m_time.GetDateTimeNow());
+
+      int numOperations = 1000;
+      for (int i = 0; i < numOperations; i++)
+      {
+        // Determine which replica to use.
+        int index = rand.Next(numReplicas);
+
+        // Determine to use the current time or a previously used time.
+        long time;
+        if (rand.NextDouble() < 0.5)
+        {
+          time = m_time.GetDateTimeNow();
+          previousTimes.Add(time);
+        }
+        else
+        {
+          time = previousTimes[rand.Next(previousTimes.Count)];
+        }
+
+        // Determine which element to use (0 to 9, both inclusive).
+        int element = rand.Next(100);
+
+        // Determine which operation to use.
+        if (rand.NextDouble() < 0.5)
+        {
+          replicas[index].Add(element, time);
+          expectedReplica.Add(element, time);
+        }
+        else
+        {
+          replicas[index].Remove(element, time);
+          expectedReplica.Remove(element, time);
+        }
+      }
+
+      LwwElementSet<int> mergedReplica = LwwElementSet<int>.Merge(
+        true, replicas.ToArray());
+
+      Assert.IsTrue(expectedReplica.Equals(mergedReplica));
     }
   }
 }

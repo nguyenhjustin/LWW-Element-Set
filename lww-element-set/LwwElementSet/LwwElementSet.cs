@@ -126,6 +126,73 @@ namespace LwwElementSet
     }
 
     /// <summary>
+    /// Override Equals method to check if two objects are equal.
+    /// </summary>
+    /// <param name="obj">The object to compare.</param>
+    /// <returns>True if they're equal; false if not.</returns>
+    public override bool Equals(object obj)
+    {
+      LwwElementSet<T> other = obj as LwwElementSet<T>;
+      
+      if (obj == null ||
+        this.m_biasAdd != other.m_biasAdd ||
+        this.m_addSet.Count != other.m_addSet.Count ||
+        this.m_removeSet.Count != other.m_removeSet.Count)
+      {
+        return false;
+      }
+
+      // Check the elements and timestamps in the add sets are equal.
+      foreach (COLG.KeyValuePair<T, long> kvp in this.m_addSet)
+      {
+        T element = kvp.Key;
+        long timestamp = kvp.Value;
+
+        if (other.m_addSet.TryGetValue(element, out long otherTimestamp))
+        {
+          if (timestamp != otherTimestamp)
+          {
+            return false;
+          }
+        }
+        else
+        {
+          return false;
+        }
+      }
+
+      // Check the elements and timestamps in the remove sets are equal.
+      foreach (COLG.KeyValuePair<T, long> kvp in this.m_removeSet)
+      {
+        T element = kvp.Key;
+        long timestamp = kvp.Value;
+
+        if (other.m_removeSet.TryGetValue(element, out long otherTimestamp))
+        {
+          if (timestamp != otherTimestamp)
+          {
+            return false;
+          }
+        }
+        else
+        {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    /// <summary>
+    /// Required override because Equals is overridden.
+    /// </summary>
+    /// <returns>The object's hash code.</returns>
+    public override int GetHashCode()
+    {
+      return base.GetHashCode();
+    }
+
+    /// <summary>
     /// Returns the merged result of all the <paramref name="replicas"/>.
     /// </summary>
     /// <param name="biasAdd">True to have equal timestamps bias towards add; 
